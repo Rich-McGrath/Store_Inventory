@@ -20,20 +20,34 @@ module Inventoryable
       instances.each(&block)
     end
 
-    def in_stock_report
-      puts "#{self.to_s} In stock Report"
-      reportable = instances.select{ |instance| instance.in_stock? }
-      reportable.each do |item|
+    def report(title, items)
+      puts "_" * 50
+      puts title
+      puts "-" * 50
+      items.each do |item|
         line = []
         line.push("Item: #{item.attributes[:name]}")
-        line.push("Stock: #{item.stock_count}")
         if item.attributes.include?(:size)
-          line.push("Size: ##{item.attributes[:size]}")
+          line.push("Size: #{item.attributes[:size]}")
         end
         puts line.join("\t")
       end
+      puts "-" * 50
       puts "\n"
     end
+
+    def in_stock_report
+      puts "#{self.to_s} In stock Report"
+      reportable = instances.select{ |instance| instance.in_stock? }
+      report(title, reportalbe)
+    end
+
+    def out_of_stock_report
+      title = "#{self.to_s} Out of Stock Report"
+      reportable = instances.select{ |instances| !instances.in_stock? }
+      repot(title, repotable)
+    end  
+
   end
 
   def stock_count
